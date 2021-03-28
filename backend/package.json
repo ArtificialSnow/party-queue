@@ -1,0 +1,28 @@
+{
+  "name": "party-queue-backend",
+  "version": "0.1.0",
+  "description": "",
+  "main": "./src/server.js",
+  "scripts": {
+    "start": "node -r esm ./src/server.js",
+    "server": "npm run start",
+    "production": "cross-env NODE_ENV=production PORT=3000 node -r esm ./src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "core-js": "^3.9.1",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "node-cache": "^5.1.2",
+    "priorityqueuejs": "^2.0.0",
+    "randomstring": "^1.1.5",
+    "react-router-dom": "^5.2.0",
+    "websocket": "^1.0.33"
+  },
+  "devDependencies": {
+    "@types/websocket": "^1.0.2",
+    "cross-env": "^7.0.3"
+  }
+}
