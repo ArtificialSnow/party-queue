@@ -19,11 +19,11 @@ app.use(express.static(path.join(__dirname, '../public')));
 if (process.env.NODE_ENV === 'production') {
 
     // Make all files in that folder public
-    app.use(express.static(path.join(__dirname, '../../frontend/build')));
+    app.use(express.static(path.join(__dirname, '../../client/build')));
 
     // If we get any GET request we can't process using one of the server routes, serve up index.html by default.
     app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '../../frontend/build/index.html'));
+        res.sendFile(path.join(__dirname, '../../client/build/index.html'));
     });
 }
 

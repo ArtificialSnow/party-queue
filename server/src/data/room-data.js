@@ -1,21 +1,19 @@
 import { Dict as Map } from "collections/dict";
-const rooms = new Map();
+export const rooms = new Map();
+rooms.set('ABCDEF', 'x');
 
-function getRoomById(roomId) {
+export function getRoomById(roomId) {
     return rooms.get(roomId);
 }
 
-function addRoom(roomId, room) {
+export function addRoom(roomId, room) {
     rooms.set(roomId, rooms);
 }
 
-function deleteRoom(roomId) {
+export function deleteRoom(roomId) {
     rooms.delete(roomId);
 }
 
 export default {
-    rooms,
-    getRoomById,
-    addRoom,
-    deleteRoom
+    rooms
 }
