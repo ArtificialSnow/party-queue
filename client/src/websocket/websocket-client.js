@@ -26,8 +26,8 @@ export default function UseWebSocket() {
     client.onclose = function () {
         console.log('echo-protocol Client Closed');
     };
-
-    client.onmessage = function (e) {
+    
+    client.onmessage = (e) => {
         if (typeof e.data === 'string') {
             console.log("Received: '" + e.data + "'");
         }

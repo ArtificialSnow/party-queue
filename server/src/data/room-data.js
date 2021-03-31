@@ -1,5 +1,6 @@
 import { Dict as Map } from "collections/dict";
-export const rooms = new Map();
+
+const rooms = new Map();
 rooms.set('ABCDEF', 'x');
 
 export function getRoomById(roomId) {

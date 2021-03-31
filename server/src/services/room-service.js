@@ -5,19 +5,34 @@ const Queue = require('collections/deque');
 const Map = require('collections/dict');
 
 function createRoom() {
-    var roomId = generateUniqueRoomId();
-
-    var redisClient = redis.createClient();
-    redisClient.subscribe(`room:${roomId}`);
-
-    addRoom(roomId, {
+    const roomId = generateUniqueRoomId();
+    const redisClient = redis.CreateClient();
+    const channel = `room:${roomId}`;
+    var room = {
         roomId: roomId,
+        roomCapacity: ROOM_CAPACITY,
+
+        channel: channel,
         redisClient: redisClient,
         users: new Map(),
-        roomCapacity: ROOM_CAPACITY,
-        mediaQueue: new Queue()
-    });
 
+        mediaQueue: new Queue()
+    }
+
+    // Heartbeat for each room
+    const interval = setInterval(function ping() {
+        users.forEach(function each(ws) {
+            if (ws.isAlive === false) {
+                return ws.terminate();
+            }
+
+            ws.isAlive = false;
+            ws.ping();
+        });
+    }, 30000);
+
+
+    addRoom(roomId, room);
     return {
         roomId: roomId,
         roomCapacity: ROOM_CAPACITY

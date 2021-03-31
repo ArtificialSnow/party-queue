@@ -1,32 +1,42 @@
 import { httpServer } from './server.js';
 import { parseMessage } from './message-handlers/message-parser.js';
 import { getRoomById } from './data/room-data';
+import { WEBSOCKET_SERVER_PORT } from '../../shared/constants.js';
 
 const ws = require('ws');
 var Url = require('url-parse');
 const queryString = require('query-string');
 
-export const wsServer = new ws.Server({ noServer: true, port: 8080 });
+export const wsServer = new ws.Server({ noServer: true, port: WEBSOCKET_SERVER_PORT });
 wsServer.on('connection', function connection(ws, request, client) {
     const { query } = new Url(request.url);
     const queries = queryString.parse(query);
     const roomId = queries.roomId;
     const nickname = queries.nickname || 'Anonymous';
 
-    ws.on('open', function open(msg) {
-        //add user to room user list
+    const room = getRoomById(roomId);
+    if (!room) {
+        this.close();
+    }
+
+    // Add user to room list
+    // to-do
+
+    // Respond to heartbeats
+    ws.isAlive = true;
+    ws.on('pong', () => {
+        this.isAlive = true;
+        console.log('pong received');
     });
 
-    ws.on('message', function message(msg) {
-        parseMessage(roomId, nickname, msg);
+    ws.on('message', function incoming(data) {
+        parseMessage(roomId, nickname, data);
     });
 
-    ws.on('error', function error(msg) {
-        //resend message
-    });
-
-    ws.on('close', function close(msg) {
+    ws.on('close', function close() {
         //remove user from room user list
+        //send message - user disconnected
+        console.log('disconnected');
     });
 });
 
