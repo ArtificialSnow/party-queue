@@ -1,6 +1,5 @@
 import express from 'express';
 import path from 'path';
-const ws = require('ws');
 
 // Setup Express
 const app = express();
@@ -28,20 +27,9 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
-// Start our http server
-const httpServer = app.listen(port, () => console.log(`App server listening on port ${port}!`));
+// Start our HTTP server
+export const httpServer = app.listen(port, () => console.log(`App server listening on port ${port}!`));
 
 // Add ws-server on top of our HTTP server
-const wsServer = new ws.Server({ noServer: true });
-wsServer.on('connection', function connection(ws, request, client) {
-    ws.on('message', function message(msg) {
-        console.log(`Received message ${msg} from user ${client}`);
-    });
-});
-
-// Let the ws-server handle upgrade requests and respond with a ws-connection
-httpServer.on('upgrade', (request, socket, head) => {
-    wsServer.handleUpgrade(request, socket, head, ws => {
-        wsServer.emit('connection', ws, request);
-    });
-});
+const rooms = require('./data/room-data.js');
+const wsServer = require('./websocket-server.js');
