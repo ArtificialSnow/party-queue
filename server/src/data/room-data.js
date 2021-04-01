@@ -1,20 +1,22 @@
-import { Dict as Map } from "collections/dict";
+import ROOM_EXPIRATION_TIME from '../constants.js';
 
-const rooms = new Map();
-rooms.set('ABCDEF', 'x');
+const NodeCache = require('node-cache');
+const roomCache = new NodeCache({
+    stdTTL: ROOM_EXPIRATION_TIME,
+    checkperiod: 600,
+    useclones: false,
+    deleteOnExpire: true,
+    maxKeys: -1
+});
 
 export function getRoomById(roomId) {
-    return rooms.get(roomId);
+    return roomCache.get(roomId);
 }
 
 export function addRoom(roomId, room) {
-    rooms.set(roomId, rooms);
+    roomCache.set(roomId, room, ROOM_EXPIRATION_TIME);
 }
 
 export function deleteRoom(roomId) {
-    rooms.delete(roomId);
-}
-
-export default {
-    rooms
+    roomCache.del(roomId);
 }

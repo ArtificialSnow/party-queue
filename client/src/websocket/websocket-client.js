@@ -1,8 +1,7 @@
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 
-export default function UseWebSocket() {
+export default function UseWebSocket(id) {
     console.log('before');
-    var id ='ABCDEF';
     var nickname = 'Peter';
     var client = new W3CWebSocket(`ws://localhost:8080/join?roomId=${id}&nickname=${nickname}`);
     console.log('hi');
@@ -26,7 +25,7 @@ export default function UseWebSocket() {
     client.onclose = function () {
         console.log('echo-protocol Client Closed');
     };
-    
+
     client.onmessage = (e) => {
         if (typeof e.data === 'string') {
             console.log("Received: '" + e.data + "'");

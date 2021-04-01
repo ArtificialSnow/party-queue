@@ -1,8 +1,12 @@
 import React from 'react';
+import axios from 'axios';
 import UseWebSocket from '../websocket/websocket-client.js';
 
 async function buttonClick() {
-  UseWebSocket();
+  const reponse = await axios.post('/api/room/create');
+  const roomId = reponse.data.roomId
+
+  UseWebSocket(roomId);
 }
 
 
