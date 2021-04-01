@@ -1,7 +1,9 @@
 import { httpServer } from './server.js';
 import { parseMessage } from './message-handlers/message-parser.js';
 import { getRoomById } from './data/room-data';
+import { joinRoom, leaveRoom } from './data/room-service.js';
 import { WEBSOCKET_SERVER_PORT } from '../../shared/constants.js';
+import { User } from './data/user.js';
 
 const ws = require('ws');
 var Url = require('url-parse');
@@ -13,29 +15,28 @@ wsServer.on('connection', function connection(ws, request, client) {
     const queries = queryString.parse(query);
     const roomId = queries.roomId;
     const nickname = queries.nickname || 'Anonymous';
-
-    const room = getRoomById(roomId);
-    if (!room) {
+    if (!getRoomById(roomId)) {
         this.close();
     }
 
     // Add user to room list
-    // to-do
+    const user = new User(ws);
+    joinRoom(roomId, user);
 
     // Respond to heartbeats
     ws.isAlive = true;
     ws.on('pong', () => {
-        this.isAlive = true;
+        ws.isAlive = true;
         console.log('pong received');
     });
 
+    // Parse incoming messages
     ws.on('message', function incoming(data) {
         parseMessage(roomId, nickname, data);
     });
 
     ws.on('close', function close() {
-        //remove user from room user list
-        //send message - user disconnected
+        leaveRoom(roomId, user);
         console.log('disconnected');
     });
 });
@@ -64,8 +65,7 @@ httpServer.on('upgrade', (request, socket, head) => {
         return;
     }
 
-    const roomIsFull = false;
-    if (roomIsFull) {
+    if (room.isFull()) {
         socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
         socket.destroy();
         return;

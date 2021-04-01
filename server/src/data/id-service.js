@@ -1,4 +1,5 @@
 import { getRoomById } from './room-data.js';
+import { v4 as uuid } from 'uuid';
 
 function randomString(length) {
     let result = '';
@@ -23,4 +24,8 @@ export function generateUniqueRoomId() {
     }
 
     return roomId;
+}
+
+export function generateUserId() {
+    return uuid();
 }

@@ -1,27 +1,33 @@
 import { generateUniqueRoomId } from './id-service.js';
-import ROOM_CAPACITY from '../constants.js';
+import { ROOM_CAPACITY, ROOM_HEARTBEAT_FREQUENCY } from '../constants.js';
 const Denque = require('denque');
-const _ = require('lodash');
 
 export class Room {
     constructor() {
+        var self = this;
         this.roomId = generateUniqueRoomId();
         this.roomCapacity = ROOM_CAPACITY;
+        this.creationTime = new Date().getTime();
         this.users = new Map();
         this.mediaQueue = new Denque();
 
-        // Heartbeat for each room
-        setInterval(function ping() {
-            _.forEach(this.users, function each(userId, user) {
+        // Start heartbeat for room
+        setInterval(() => {
+            console.log(`pinging ${self.users.size} users in ${self.roomId}`);
+            self.users.forEach((user, userId) => {
                 let ws = user.ws;
                 if (ws.isAlive === false) {
-                    return ws.terminate();
+                    return ws.close();
                 }
 
                 ws.isAlive = false;
                 ws.ping();
             });
-        }, 30000);
+        }, ROOM_HEARTBEAT_FREQUENCY);
+    }
+
+    isEmpty() {
+        return this.users.size === 0;
     }
 
     message(data) {
@@ -30,7 +36,17 @@ export class Room {
         });
     }
 
-    join(user) {
-        this.users.add(user);
+    addUser(userId, user) {
+        this.users.set(userId, user);
+        console.log(`added user. ${this.users.size} in ${this.roomId}`);
+    }
+
+    removeUser(userId) {
+        this.users.delete(userId);
+        console.log(`removed user. ${this.users.size} in ${this.roomId}`);
+    }
+
+    isFull() {
+        return this.users.size >= this.roomCapacity;
     }
 }
