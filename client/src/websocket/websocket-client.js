@@ -1,8 +1,8 @@
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 
-export default function UseWebSocket(id) {
+export default function UseWebSocket(id, nickname) {
     console.log('before');
-    var nickname = 'Peter';
+    var nickname = nickname;
     var client = new W3CWebSocket(`ws://localhost:8080/join?roomId=${id}&nickname=${nickname}`);
     console.log('hi');
     client.onerror = function () {

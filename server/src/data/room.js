@@ -26,14 +26,14 @@ export class Room {
         }, ROOM_HEARTBEAT_FREQUENCY);
     }
 
-    isEmpty() {
-        return this.users.size === 0;
-    }
-
     message(data) {
         this.users.forEach(user => {
             user.ws.send(data);
         });
+    }
+
+    addToQueue(media) {
+        this.mediaQueue.push(media);
     }
 
     addUser(userId, user) {
@@ -48,5 +48,9 @@ export class Room {
 
     isFull() {
         return this.users.size >= this.roomCapacity;
+    }
+
+    isEmpty() {
+        return this.users.size === 0;
     }
 }

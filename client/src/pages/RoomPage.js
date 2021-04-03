@@ -6,7 +6,7 @@ async function buttonClick() {
   const reponse = await axios.post('/api/room/create');
   const roomId = reponse.data.roomId
 
-  UseWebSocket(roomId);
+  UseWebSocket(roomId, 'Peter');
 }
 
 

@@ -1,8 +1,8 @@
 import { httpServer } from './server.js';
 import { parseMessage } from './message-handlers/message-parser.js';
 import { getRoomById } from './data/room-data';
-import { joinRoom, leaveRoom } from './data/room-service.js';
-import { WEBSOCKET_SERVER_PORT } from '../../shared/constants.js';
+import { roomExists, joinRoom, leaveRoom } from './data/room-service.js';
+import { BAD_REQUEST_RESPONSE, NOT_FOUND_RESPONSE, FORBIDDEN_RESPONSE, WEBSOCKET_SERVER_PORT } from '../../shared/constants.js';
 import { User } from './data/user.js';
 
 const ws = require('ws');
@@ -21,6 +21,7 @@ wsServer.on('connection', function connection(ws, request, client) {
 
     // Add user to room list
     const user = new User(ws);
+    // Send message
     joinRoom(roomId, user);
 
     // Respond to heartbeats
@@ -53,20 +54,20 @@ httpServer.on('upgrade', (request, socket, head) => {
     const queries = queryString.parse(query);
     const roomId = queries.roomId;
     if (!roomId) {
-        socket.write('HTTP/1.1 400 Bad Request\r\n\r\n');
+        socket.write(BAD_REQUEST_RESPONSE);
         socket.destroy();
         return;
     }
 
     const room = getRoomById(roomId);
     if (!room) {
-        socket.write('HTTP/1.1 404 Not Found\r\n\r\n');
+        socket.write(NOT_FOUND_RESPONSE);
         socket.destroy();
         return;
     }
 
     if (room.isFull()) {
-        socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
+        socket.write(FORBIDDEN_RESPONSE);
         socket.destroy();
         return;
     }
