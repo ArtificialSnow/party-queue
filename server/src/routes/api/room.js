@@ -1,6 +1,6 @@
 import express from 'express';
 import { ReasonPhrases, StatusCodes, getReasonPhrase, getStatusCode } from 'http-status-codes';
-import createRoom from '../../services/room-service.js';
+import { createRoom } from '../../data/room-service.js';
 
 const router = express.Router();
 
