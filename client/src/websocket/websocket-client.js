@@ -2,12 +2,18 @@ import { w3cwebsocket as W3CWebSocket } from 'websocket';
 
 export class WebSocketClient {
 
-    
+    static instance = null;
 
-    constructor(roomId, nickname, setMessage){
+    static getInstance(roomId, nickname, addToQueue){
+        if(!WebSocketClient.instance){
+            WebSocketClient.instance = new WebSocketClient(roomId, nickname, addToQueue);
+        } 
+        return WebSocketClient.instance; 
+    }
+
+    constructor(roomId, nickname, addToQueue){
         var self = this;
-        this.setMessage = setMessage; 
-        this.message = "A";
+        this.addToQueue = addToQueue; 
         this.socketRef = new W3CWebSocket(`ws://localhost:8080/join?roomId=${roomId}&nickname=${nickname}`);
         
         this.socketRef.onopen = () => {
@@ -17,9 +23,8 @@ export class WebSocketClient {
         this.socketRef.onmessage = (e) => {
             if (typeof e.data === 'string') {
                 console.log("Received: '" + e.data + "'");
-                this.message = e.data;
-                this.setMessage(this.message);
-                console.log(this.message + " fuck")
+                this.addToQueue(e.data);
+                console.log(e.data + " fuck")
             }
         };
 
@@ -34,7 +39,7 @@ export class WebSocketClient {
 
     sendMessage = (message) => {
         const socket = this.socketRef;
-        socket.send("hey");
+        socket.send(message);
     }
 }
 
