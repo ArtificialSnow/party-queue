@@ -1,34 +1,40 @@
-import { w3cwebsocket as W3CWebSocket } from 'websocket';
+import { w3cwebsocket as W3CWebSocket } from 'websocket'; 
 
-export default function UseWebSocket(id, nickname) {
-    console.log('before');
-    var nickname = nickname;
-    var client = new W3CWebSocket(`ws://localhost:8080/join?roomId=${id}&nickname=${nickname}`);
-    console.log('hi');
-    client.onerror = function () {
-        console.log('Connection Error');
-    };
+export class WebSocketClient {
 
-    client.onopen = function () {
-        console.log('WebSocket Client Connected');
+    
 
-        function sendNumber() {
-            if (client.readyState === client.OPEN) {
-                var number = Math.round(Math.random() * 0xFFFFFF);
-                client.send(number.toString());
-                setTimeout(sendNumber, 1000);
+    constructor(roomId, nickname, setMessage){
+        var self = this;
+        this.setMessage = setMessage; 
+        this.message = "A";
+        this.socketRef = new W3CWebSocket(`ws://localhost:8080/join?roomId=${roomId}&nickname=${nickname}`);
+        
+        this.socketRef.onopen = () => {
+            console.log('WebSocket open');
+        };
+
+        this.socketRef.onmessage = (e) => {
+            if (typeof e.data === 'string') {
+                console.log("Received: '" + e.data + "'");
+                this.message = e.data;
+                this.setMessage(this.message);
+                console.log(this.message + " fuck")
             }
-        }
-        sendNumber();
-    };
+        };
 
-    client.onclose = function () {
-        console.log('echo-protocol Client Closed');
-    };
+        this.onerror = function () {
+            console.log('Connection Error');
+        };
 
-    client.onmessage = (e) => {
-        if (typeof e.data === 'string') {
-            console.log("Received: '" + e.data + "'");
-        }
-    };
+        this.socketRef.onclose = function () {
+            console.log('echo-protocol Client Closed');
+        };
+    }
+
+    sendMessage = (message) => {
+        const socket = this.socketRef;
+        socket.send("hey");
+    }
 }
+

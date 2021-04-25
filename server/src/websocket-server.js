@@ -25,11 +25,11 @@ wsServer.on('connection', function connection(ws, request, client) {
     joinRoom(roomId, user);
 
     // Respond to heartbeats
-    ws.isAlive = true;
+   /*  ws.isAlive = true;
     ws.on('pong', () => {
         ws.isAlive = true;
         console.log('pong received');
-    });
+    }); */
 
     // Parse incoming messages
     ws.on('message', function incoming(data) {

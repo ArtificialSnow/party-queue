@@ -5,8 +5,8 @@ function parseMessage(roomId, nickname, msg) {
     if (!room) {
         //reply invalid message to client
     }
-
     console.log(`${nickname}: ${msg} to ${roomId}`);
+    room.message(`${nickname}: ${msg} to ${roomId}`);
 }
 
 export {

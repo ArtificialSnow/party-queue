@@ -1,12 +1,29 @@
 import React from 'react';
+import Room from './RoomPage.js';
+import { useHistory } from 'react-router'
+import {useLocalStorage} from '../global/LocalStorage';
 
-function Home() {
-    return (
-      <div>
-          <h1>Home Page</h1>
-          <a href="./room">Room</a>
-      </div>
-    );
+
+export default function Home() {
+
+  const history = useHistory();
+  const [roomId, setRoomId] = useLocalStorage('roomId', "noId");
+
+  async function joinRoom() {
+    var roomId = document.getElementById("roomId").value;
+    setRoomId(roomId);
+    history.push("/RoomPage");
   }
 
-  export default Home;
+  return (
+    <div>
+      <h1>Home Page</h1>
+        <form>
+          <label for="roomId">Room id:</label>
+          <input type="text" id="roomId"></input>
+          <button onClick={joinRoom}>Submit</button>
+        </form>
+        <a href="/CreateRoomPage">Dont have a room?</a>
+    </div>
+  );
+}
