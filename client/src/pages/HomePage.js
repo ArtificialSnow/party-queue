@@ -11,6 +11,7 @@ export default function Home() {
 
   async function joinRoom() {
     var roomId = document.getElementById("roomId").value;
+    window.localStorage.setItem("isCreator", JSON.stringify(false));
     setRoomId(roomId);
     history.push("/RoomPage");
   }
