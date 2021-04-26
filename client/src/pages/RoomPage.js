@@ -5,19 +5,22 @@ import { useLocalStorage } from '../global/LocalStorage';
 
 export default function Room() {
 
-  function addToQueue(message){
-    var textarea = document.getElementById("message");
-    textarea.value = message; 
+  function enqueueLocalQ(link){
+    var textarea = document.getElementById("queue");
+    textarea.value = link; 
+  }
+
+  function dequeueLocalQ(link){
+    
   }
 
   const [roomId, setRoomId] = useLocalStorage('roomId', "noId");
-  const [socket] = useState(WebSocketClient.getInstance(roomId, "sheldon", addToQueue));
+  const [socket] = useState(WebSocketClient.getInstance(roomId, "sheldon", enqueueLocalQ));
 
-  function sendMessage(){
+  function enqueueExternalQ(){
     var link = document.getElementById("link").value;
     socket.sendMessage(link);
   }
-
 
   return (
     <div>
@@ -29,7 +32,7 @@ export default function Room() {
       </div>
       <div>
         <label>Group Message:</label>
-        <textarea id ="message">
+        <textarea id ="queue">
           
         </textarea>
       </div>

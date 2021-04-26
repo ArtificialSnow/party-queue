@@ -4,20 +4,20 @@ export class WebSocketClient {
 
     static instance = null;
 
-    static getInstance(roomId, nickname, addToQueue){
+    static getInstance(roomId, nickname, enqueueLocalQ){
         if(!WebSocketClient.instance){
-            WebSocketClient.instance = new WebSocketClient(roomId, nickname, addToQueue);
+            WebSocketClient.instance = new WebSocketClient(roomId, nickname, enqueueLocalQ);
         } else if (WebSocketClient.instance.roomId != roomId){
             WebSocketClient.instance.socketRef.close();
-            WebSocketClient.instance = new WebSocketClient(roomId, nickname, addToQueue);
+            WebSocketClient.instance = new WebSocketClient(roomId, nickname, enqueueLocalQ);
         }
         return WebSocketClient.instance; 
     }
 
-    constructor(roomId, nickname, addToQueue){
+    constructor(roomId, nickname, enqueueLocalQ){
         var self = this;
         var roomId = roomId;
-        this.addToQueue = addToQueue; 
+        this.enqueueLocalQ = enqueueLocalQ; 
         this.socketRef = new W3CWebSocket(`ws://localhost:8080/join?roomId=${roomId}&nickname=${nickname}`);
         
         this.socketRef.onopen = () => {
@@ -27,8 +27,7 @@ export class WebSocketClient {
         this.socketRef.onmessage = (e) => {
             if (typeof e.data === 'string') {
                 console.log("Received: '" + e.data + "'");
-                this.addToQueue(e.data);
-                console.log(e.data + " fuck")
+                this.enqueueLocalQ(e.data);
             }
         };
 
@@ -41,9 +40,9 @@ export class WebSocketClient {
         };
     }
 
-    sendMessage = (message) => {
+    enqueueExternalQ = (link) => {
         const socket = this.socketRef;
-        socket.send(message);
+        socket.send(link);
     }
 }
 
