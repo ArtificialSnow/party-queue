@@ -16,7 +16,7 @@ wsServer.on('connection', function connection(ws, request, client) {
     const roomId = queries.roomId;
     const nickname = queries.nickname || 'Anonymous';
     if (!getRoomById(roomId)) {
-        this.close();
+        ws.close();
     }
 
     // Add user to room list
