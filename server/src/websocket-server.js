@@ -16,7 +16,7 @@ wsServer.on('connection', function connection(ws, request, client) {
     const roomId = queries.roomId;
     const nickname = queries.nickname || 'Anonymous';
     if (!getRoomById(roomId)) {
-        this.close();
+        ws.close();
     }
 
     // Add user to room list
@@ -25,11 +25,11 @@ wsServer.on('connection', function connection(ws, request, client) {
     joinRoom(roomId, user);
 
     // Respond to heartbeats
-   /*  ws.isAlive = true;
+    ws.isAlive = true;
     ws.on('pong', () => {
         ws.isAlive = true;
         console.log('pong received');
-    }); */
+    });
 
     // Parse incoming messages
     ws.on('message', function incoming(data) {

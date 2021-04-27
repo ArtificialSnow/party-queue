@@ -7,12 +7,11 @@ import {useLocalStorage} from '../global/LocalStorage';
 export default function Home() {
 
   const history = useHistory();
-  const [roomId, setRoomId] = useLocalStorage('roomId', "noId");
 
   async function joinRoom() {
     var roomId = document.getElementById("roomId").value;
     window.localStorage.setItem("isCreator", JSON.stringify(false));
-    setRoomId(roomId);
+    window.localStorage.setItem("roomId", JSON.stringify(roomId));
     history.push("/RoomPage");
   }
 

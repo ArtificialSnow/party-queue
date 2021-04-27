@@ -36,6 +36,10 @@ export class Room {
         this.mediaQueue.push(media);
     }
 
+    removeFirst() {
+        this.mediaQueue.shift();
+    }
+
     addUser(userId, user) {
         this.users.set(userId, user);
         console.log(`added user. ${this.users.size} in ${this.roomId}`);
