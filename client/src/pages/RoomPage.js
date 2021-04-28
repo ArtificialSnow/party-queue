@@ -6,11 +6,13 @@ import { QueueComponent } from  '../components/QueueComponent.js';
 
 
 export default function Room() {
-  console.log("re-rendering bitch")
+
   const [roomId, setRoomId] = useLocalStorage('roomId', "noId");
   const [creator] = window.localStorage.getItem("isCreator");
   const queue = React.createRef();
   const youtube = React.createRef();
+
+  console.log(roomId)
 
 
   //someone enqued a song
@@ -47,10 +49,10 @@ export default function Room() {
   return (
     <div>
       <div>
-        <h1>Hello, welcome to! {roomId}</h1>
+        <h1>Hello, welcome to {roomId}!</h1>
         <label>Enter link:</label>
         <input type="text" id="link"></input>
-        <button onClick={addLastExternal}>Submit</button> */
+        <button onClick={addLastExternal}>Submit</button>
       </div>
       <div>
         <label>Queue:</label>

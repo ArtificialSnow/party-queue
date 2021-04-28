@@ -42,6 +42,7 @@ export class Room {
 
     addUser(userId, user) {
         this.users.set(userId, user);
+        //Send back the queue data. 
         console.log(`added user. ${this.users.size} in ${this.roomId}`);
     }
 

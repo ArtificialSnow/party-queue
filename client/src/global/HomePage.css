@@ -1,0 +1,64 @@
+.centerBox {
+    background-color:#FFEDFC;
+    position: absolute;
+    left: 40%;
+    top: 30%;
+    margin-left: -10px;
+    /* -1/2 width */
+    margin-top: -10px;
+    /* -1/2 height */
+    text-align: center
+  }
+
+  .submitRoomIdButton {
+    box-shadow: -5px 6px #888888;
+    background-color: #4BC5FF;
+    padding: 12px 28px;
+    outline: 0; 
+    font-size: 16px;
+    border: none;
+    border: 0px solid #F52C6B;
+    font-family: inherit;
+    font-weight: 600;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    cursor: pointer;
+  }
+
+  .submitRoomIdButton:hover {
+    background-color: #F52C6B;
+    }
+    
+  .header {
+    background-color: #FFE1FE;
+    font-size: 50px;
+    border: 4px solid #F52C6B;
+    border-radius: 4px;
+    outline: 0; 
+  }
+
+  .roomIdInput{
+    box-shadow: 5px 6px #888888;
+    padding: 1px 0px 0px 0px; 
+    width: 200px;
+    height: 38px; 
+    border: 2px solid #4BC5FF;
+    margin-left: 0px;
+    margin-right: 15px;
+    text-align: center;
+    font-family: inherit;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+
+  .roomIdInput:focus {
+    outline: none;
+  }
+
+  .formDiv {
+    margin-bottom: 25px;
+  }
+
+  .joinRoomLink {
+    text-decoration: none;
+  }

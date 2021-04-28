@@ -1,0 +1,22 @@
+@font-face {
+    font-family: Akira;
+    src: url("./fonts/Akira.otf") format("opentype");
+}
+
+body{ 
+    background-color:#FFEDFC;
+    font-family: 'Akira';
+}
+
+h1{ 
+    color:#4BC5FF;
+}
+
+a:visited {
+    color:black;
+}
+
+a:hover {
+    color:#4BC5FF;
+}
+
