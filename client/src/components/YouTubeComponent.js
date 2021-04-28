@@ -10,7 +10,6 @@ export class YouTubeComponent extends React.PureComponent {
   }
 
   changeSong = (videoId) => {
-    console.log(videoId);
     if(this.notFirstTime){
       this.player.loadVideoById(videoId);
     } else {
@@ -28,7 +27,6 @@ export class YouTubeComponent extends React.PureComponent {
   }
 
   componentDidMount = () => {
-    console.log("Hey")
     // On mount, check to see if the API script is already loaded
 
       if (!window.YT) { // If not, load the script asynchronously
@@ -57,6 +55,7 @@ export class YouTubeComponent extends React.PureComponent {
   }
 
   render = () => {
+    console.log("whyyy")
     return (
       <div className="video">
         <div id={`youtube-player`}/>

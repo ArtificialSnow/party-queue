@@ -15,12 +15,17 @@ export class QueueComponent extends React.Component {
     }
 
     removeFirst = () => {
+        var array = [...this.state.queue]
+        array.shift()
         this.setState({
-            //queue: [...[this.state.queue], link]
+            queue: array
         })
     }
 
     getFirst = () => {
+        if(this.state.queue.length == 0){
+            return null;
+        }
         return this.state.queue[0];
     }
 

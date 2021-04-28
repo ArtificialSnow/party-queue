@@ -8,7 +8,7 @@ import { QueueComponent } from  '../components/QueueComponent.js';
 export default function Room() {
   console.log("re-rendering bitch")
   const [roomId, setRoomId] = useLocalStorage('roomId', "noId");
-  const [creator] = useLocalStorage("isCreator", false);
+  const [creator] = window.localStorage.getItem("isCreator");
   const queue = React.createRef();
   const youtube = React.createRef();
 
@@ -16,16 +16,17 @@ export default function Room() {
   //someone enqued a song
   function addLastLocal(link){
     queue.current.addLast(link);
-    if(queue.current.getSize() == 1){
+    console.log(creator);
+    if(queue.current.getSize() == 1 && creator == "t"){
       youtube.current.changeSong(queue.current.getFirst());
     }
   }
 
   //Song on top has finished
-  function removeFirstLocal(link){
+  function removeFirstLocal(){
     queue.current.removeFirst();
-    if(creator){
-      youtube.current.changeSong(link);
+    if(queue.current.getSize() == 1 && creator == "t"){
+      youtube.current.changeSong(queue.current.getFirst());
     }
   }
 
@@ -56,7 +57,7 @@ export default function Room() {
           <QueueComponent ref={queue}> </QueueComponent>
       </div>
       <div>
-        {creator? <YouTubeComponent removeFirstExternal={removeFirstExternal} ref={youtube}>></YouTubeComponent> : null}
+        {creator == "t"? <YouTubeComponent removeFirstExternal={removeFirstExternal} ref={youtube}>></YouTubeComponent> : null}
       </div>
     </div>
   );
