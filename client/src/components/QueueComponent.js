@@ -37,11 +37,8 @@ export class QueueComponent extends React.Component {
         if(this.state.queue.length == 0){ return <p>No songs are in the queue</p> }
         
         return (
-<<<<<<< Updated upstream
-            [this.state.queue].map((item, index) => <p key={index}>{item}</p>)  
-=======
+
             this.state.queue.map((item, index) => <p key={index}>{item}</p>)  
->>>>>>> Stashed changes
         )
     }
    
