@@ -5,24 +5,30 @@ import { YouTubeComponent } from  '../components/YouTubeComponent';
 import { QueueComponent } from  '../components/QueueComponent.js';
 
 
-export const RoomContext = React.createContext([]);
-
 export default function Room() {
-
+  console.log("re-rendering bitch")
   const [roomId, setRoomId] = useLocalStorage('roomId', "noId");
   const [creator] = useLocalStorage("isCreator", false);
-  const [queue] = useState([]);
+  const queue = React.createRef();
+  const youtube = React.createRef();
 
-  console.log(roomId);
+
   //someone enqued a song
   function addLastLocal(link){
-    queue.push(link); 
+    queue.current.addLast(link);
+    if(queue.current.getSize() == 1){
+      youtube.current.changeSong(queue.current.getFirst());
+    }
   }
 
   //Song on top has finished
   function removeFirstLocal(link){
-    queue.shift();
+    queue.current.removeFirst();
+    if(creator){
+      youtube.current.changeSong(link);
+    }
   }
+
   console.log(roomId)
   const [socket] = useState(WebSocketClient.getInstance(roomId, "sheldon", addLastLocal, removeFirstLocal));
 
@@ -34,7 +40,6 @@ export default function Room() {
 
   //This removed a song, only will be called by the YouTubeComponent
   function removeFirstExternal(){
-    console.log("bang")
     socket.removeFirstExternal();
   }
 
@@ -48,13 +53,12 @@ export default function Room() {
       </div>
       <div>
         <label>Queue:</label>
-        <RoomContext.Provider value={queue}>
-          <QueueComponent> </QueueComponent>
-        </RoomContext.Provider>
+          <QueueComponent ref={queue}> </QueueComponent>
       </div>
       <div>
-        {creator? <YouTubeComponent id="UOgBFL6bJTY" removeFirstExternal={removeFirstExternal}></YouTubeComponent> : null}
+        {creator? <YouTubeComponent removeFirstExternal={removeFirstExternal} ref={youtube}>></YouTubeComponent> : null}
       </div>
     </div>
   );
-}
+} 
+
