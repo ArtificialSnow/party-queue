@@ -12,7 +12,8 @@ export default function CreateRoom() {
         const reponse = await axios.post('/api/room/create');
         const roomId = reponse.data.roomId;
         setRoomId(roomId);
-        window.localStorage.setItem("isCreator", JSON.stringify(true));
+        window.localStorage.setItem("isCreator", "t");
+        console.log(window.localStorage.getItem("isCreator"))
         history.push("/RoomPage"); 
     }
 

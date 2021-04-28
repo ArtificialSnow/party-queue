@@ -8,9 +8,9 @@ export default function Home() {
 
   const history = useHistory();
 
-  async function joinRoom() {
+  function joinRoom() {
     var roomId = document.getElementById("roomId").value;
-    window.localStorage.setItem("isCreator", JSON.stringify(false));
+    window.localStorage.setItem("isCreator", JSON.stringify("f"));
     window.localStorage.setItem("roomId", JSON.stringify(roomId));
     history.push("/RoomPage");
   }
