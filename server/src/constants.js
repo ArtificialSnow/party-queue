@@ -1,5 +1,8 @@
 // Store global application constants in this file
 
+//Youtube API
+export const YOUTUBE_API = "AIzaSyB6OR4kzJzEQcjrk2o0_kmfRwpLnLrk-aA";
+
 //Room constants
 export const ROOM_CAPACITY = 50;
 export const ROOM_HARD_EXPIRATION_TIME = 43200000; // 12 hours in ms

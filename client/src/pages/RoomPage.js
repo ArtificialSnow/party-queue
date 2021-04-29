@@ -16,9 +16,8 @@ export default function Room() {
 
 
   //someone enqued a song
-  function addLastLocal(link){
-    queue.current.addLast(link);
-    console.log(creator);
+  function addLastLocal(videoId, songName){
+    queue.current.addLast(videoId, songName);
     if(queue.current.getSize() == 1 && creator == "t"){
       youtube.current.changeSong(queue.current.getFirst());
     }

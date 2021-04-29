@@ -1,8 +1,14 @@
 .centerBox {
+    border: 4px solid #F5528A;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 40px;
+    padding-bottom: 150px;
+    border-radius: 4px;
     background-color:#FFEDFC;
     position: absolute;
-    left: 40%;
-    top: 30%;
+    left: 36%;
+    top: 22%;
     margin-left: -10px;
     /* -1/2 width */
     margin-top: -10px;
@@ -17,7 +23,7 @@
     outline: 0; 
     font-size: 16px;
     border: none;
-    border: 0px solid #F52C6B;
+    border: 0px solid #F5528A;
     font-family: inherit;
     font-weight: 600;
     border-top-right-radius: 4px;
@@ -26,13 +32,13 @@
   }
 
   .submitRoomIdButton:hover {
-    background-color: #F52C6B;
+    background-color: #F5528A;
     }
     
   .header {
     background-color: #FFE1FE;
     font-size: 50px;
-    border: 4px solid #F52C6B;
+    border: 4px solid #F5528A;
     border-radius: 4px;
     outline: 0; 
   }
