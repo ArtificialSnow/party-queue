@@ -1,7 +1,7 @@
 import { httpServer } from './server.js';
 import { parseMessage } from './message-handlers/message-parser.js';
 import { getRoomById } from './data/room-data';
-import { roomExists, joinRoom, leaveRoom } from './data/room-service.js';
+import { roomExists, joinRoom, leaveRoom} from './data/room-service.js';
 import { BAD_REQUEST_RESPONSE, NOT_FOUND_RESPONSE, FORBIDDEN_RESPONSE, WEBSOCKET_SERVER_PORT } from '../../shared/constants.js';
 import { User } from './data/user.js';
 
@@ -33,13 +33,14 @@ wsServer.on('connection', function connection(ws, request, client) {
 
     // Parse incoming messages
     ws.on('message', function incoming(data) {
-        parseMessage(roomId, nickname, data);
+        parseMessage(ws, roomId, nickname, data);
     });
 
     ws.on('close', function close() {
         leaveRoom(roomId, user);
         console.log('disconnected');
     });
+
 });
 
 // Let the ws-server handle upgrade requests and respond with a ws-connection

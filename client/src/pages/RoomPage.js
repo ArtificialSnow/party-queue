@@ -4,6 +4,7 @@ import { useLocalStorage } from '../global/LocalStorage';
 import { YouTubeComponent } from  '../components/YouTubeComponent';
 import { QueueComponent } from  '../components/QueueComponent.js';
 import '../global/RoomPage.css';
+import { setInterval } from 'timers';
 
 
 export default function Room() {
@@ -32,13 +33,23 @@ export default function Room() {
     }
   }
 
+  function setQueueState(videoIds, videoNames){
+     queue.current.setQueueState(videoIds, videoNames);
+  }
+
   console.log(roomId)
-  const [socket] = useState(WebSocketClient.getInstance(roomId, "sheldon", addLastLocal, removeFirstLocal));
+  const [socket] = useState(WebSocketClient.getInstance(roomId, "sheldon", addLastLocal, removeFirstLocal, setQueueState));  
+
+
 
   //This enqued a song
   function addLastExternal(){
     var link = document.getElementById("link").value;
     socket.addLastExternal(link);
+  }
+
+  function getQueueState(){
+    socket.getQueueState();
   }
 
   //This removed a song, only will be called by the YouTubeComponent
@@ -57,7 +68,7 @@ export default function Room() {
       <div class="container">
         <div class="container-child">
           <label>Queue:</label>
-            <QueueComponent ref={queue}> </QueueComponent>
+            <QueueComponent getQueueState={getQueueState} ref={queue}> </QueueComponent>
         </div>
         <div class="container-child">
           {creator == "t"? <YouTubeComponent removeFirstExternal={removeFirstExternal} ref={youtube}>></YouTubeComponent> : null}

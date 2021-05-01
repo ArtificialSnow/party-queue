@@ -62,4 +62,22 @@ export class Room {
         return this.users.size === 0;
     }
 
+    getQueuedSongNames(){
+        var songNames = [];
+        var i;
+        for(i = 0; i<this.videoNameQueue.length; i++){
+            songNames.push(this.videoNameQueue.peekAt(i));
+        }
+        return songNames; 
+    }
+
+    getQueuedSongIds(){
+        var songIds = [];
+        var i;
+        for(i = 0; i<this.videoIdQueue.length; i++){
+            songIds.push(this.videoIdQueue.peekAt(i));
+        }
+        return songIds; 
+    }
+
 }

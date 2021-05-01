@@ -3,7 +3,7 @@ import { YOUTUBE_API } from '../constants.js';
 import axios from 'axios';
 
 
-async function parseMessage(roomId, nickname, msg) {
+async function parseMessage(ws, roomId, nickname, msg) {
     const room = getRoomById(roomId);
     if (!room) {
         //reply invalid message to client
@@ -27,6 +27,17 @@ async function parseMessage(roomId, nickname, msg) {
             videoId: "",
             videoName: "", 
             instruction: "R"
+        }));
+        return; 
+    }
+
+    if(query[0] == "getQueueState"){
+        var songNames = room.getQueuedSongNames();
+        var songIds = room.getQueuedSongIds();
+        ws.send(JSON.stringify({
+            videoNames: JSON.stringify(songNames),
+            videoIds: JSON.stringify(songIds), 
+            instruction: "Q"
         }));
         return; 
     }
