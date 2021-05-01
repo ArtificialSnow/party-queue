@@ -3,20 +3,22 @@ import { WebSocketClient } from '../websocket/websocket-client.js';
 import { useLocalStorage } from '../global/LocalStorage';
 import { YouTubeComponent } from  '../components/YouTubeComponent';
 import { QueueComponent } from  '../components/QueueComponent.js';
+import '../global/RoomPage.css';
 
 
 export default function Room() {
-  console.log("re-rendering bitch")
+
   const [roomId, setRoomId] = useLocalStorage('roomId', "noId");
   const [creator] = window.localStorage.getItem("isCreator");
   const queue = React.createRef();
   const youtube = React.createRef();
 
+  console.log(roomId)
+
 
   //someone enqued a song
-  function addLastLocal(link){
-    queue.current.addLast(link);
-    console.log(creator);
+  function addLastLocal(videoId, songName){
+    queue.current.addLast(videoId, songName);
     if(queue.current.getSize() == 1 && creator == "t"){
       youtube.current.changeSong(queue.current.getFirst());
     }
@@ -47,17 +49,19 @@ export default function Room() {
   return (
     <div>
       <div>
-        <h1>Hello, welcome to! {roomId}</h1>
+        <h1>Hello, welcome to {roomId}!</h1>
         <label>Enter link:</label>
-        <input type="text" id="link"></input>
-        <button onClick={addLastExternal}>Submit</button> */
+        <input class="linkIdInput" type="text" id="link"></input>
+        <button class="submitLinkButton" onClick={addLastExternal}>Submit</button>
       </div>
-      <div>
-        <label>Queue:</label>
-          <QueueComponent ref={queue}> </QueueComponent>
-      </div>
-      <div>
-        {creator == "t"? <YouTubeComponent removeFirstExternal={removeFirstExternal} ref={youtube}>></YouTubeComponent> : null}
+      <div class="container">
+        <div class="container-child">
+          <label>Queue:</label>
+            <QueueComponent ref={queue}> </QueueComponent>
+        </div>
+        <div class="container-child">
+          {creator == "t"? <YouTubeComponent removeFirstExternal={removeFirstExternal} ref={youtube}>></YouTubeComponent> : null}
+        </div>
       </div>
     </div>
   );

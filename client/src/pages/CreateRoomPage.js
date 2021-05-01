@@ -1,6 +1,7 @@
 import {useLocalStorage} from '../global/LocalStorage';
 import {useHistory} from 'react-router';
 import axios from 'axios';
+import '../global/CreateRoomPage.css';
 
 
 export default function CreateRoom() {
@@ -18,9 +19,9 @@ export default function CreateRoom() {
     }
 
     return (
-        <div>
-          <h1>Create A Room!</h1>
-            <button onClick={RequestRoomCreation}>Create</button>
+        <div class="centerBoxCreateRoom">
+          <h1>Create A Room !</h1>
+            <button class="createRoomButton"onClick={RequestRoomCreation}>Create</button>
         </div>
       );
 }

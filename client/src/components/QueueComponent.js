@@ -5,39 +5,50 @@ import { RoomContext } from '../pages/RoomPage';
 export class QueueComponent extends React.Component {
 
     state = {
-        queue: []
+        queueVideoIds: [],
+        queueVideoNames: []
     }
 
-    addLast = (link) => {
+    addLast = (videoId, songName) => {
         this.setState({
-            queue: [...this.state.queue, link]
-        })
+            queueVideoIds: [...this.state.queueVideoIds, videoId]
+        }); 
+        this.setState({
+            queueVideoNames: [...this.state.queueVideoNames, songName]
+        });
     }
 
     removeFirst = () => {
-        var array = [...this.state.queue]
-        array.shift()
+        var arrayIds = [...this.state.queueVideoIds]
+        arrayIds.shift();
         this.setState({
-            queue: array
-        })
+            queueVideoIds: arrayIds
+        });
+
+        var arrayNames = [...this.state.queueVideoNames]
+        arrayNames.shift();
+        this.setState({
+            queueVideoNames: arrayNames
+        });
     }
 
     getFirst = () => {
-        if(this.state.queue.length == 0){
+        if(this.state.queueVideoIds.length == 0){
             return null;
         }
-        return this.state.queue[0];
+        return this.state.queueVideoIds[0];
     }
 
     getSize = () => {
-        return this.state.queue.length;
+        return this.state.queueVideoIds.length;
     }
 
     render(){
-        if(this.state.queue.length == 0){ return <p>No songs are in the queue</p> }
+         //Change this to names when we get the names. 
+        if(this.state.queueVideoNames.length == 0){ return <p>No songs are in the queue</p> }
         
         return (
-            [this.state.queue].map((item, index) => <p key={index}>{item}</p>)  
+            this.state.queueVideoNames.map((item, index) => <p id="node" key={index}>{item}</p>)  
         )
     }
    

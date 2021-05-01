@@ -9,7 +9,8 @@ export class Room {
         this.roomCapacity = ROOM_CAPACITY;
         this.creationTime = new Date().getTime();
         this.users = new Map();
-        this.mediaQueue = new Denque();
+        this.videoIdQueue = new Denque();
+        this.videoNameQueue = new Denque();
 
         // Start heartbeat for room
         setInterval(() => {
@@ -32,16 +33,19 @@ export class Room {
         });
     }
 
-    addToQueue(media) {
-        this.mediaQueue.push(media);
+    addToQueue(videoId, videoName) {
+        this.videoIdQueue.push(videoId);
+        this.videoNameQueue.push(videoName);
     }
 
     removeFirst() {
-        this.mediaQueue.shift();
+        this.videoIdQueue.shift();
+        this.videoNameQueue.shift();
     }
 
     addUser(userId, user) {
         this.users.set(userId, user);
+        //Send back the queue data. 
         console.log(`added user. ${this.users.size} in ${this.roomId}`);
     }
 
@@ -57,4 +61,5 @@ export class Room {
     isEmpty() {
         return this.users.size === 0;
     }
+
 }

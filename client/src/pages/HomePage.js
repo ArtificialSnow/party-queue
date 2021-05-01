@@ -1,5 +1,6 @@
 import React from 'react';
 import Room from './RoomPage.js';
+import '../global/HomePage.css';
 import { useHistory } from 'react-router'
 import {useLocalStorage} from '../global/LocalStorage';
 
@@ -16,14 +17,15 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <h1>Home Page</h1>
-        <form>
-          <label for="roomId">Room id:</label>
-          <input type="text" id="roomId"></input>
-          <button onClick={joinRoom}>Submit</button>
-        </form>
-        <a href="/CreateRoomPage">Dont have a room?</a>
+    <div class="centerBox">
+      <h1 class="header">MUSICQ</h1>
+        <div class="formDiv">
+          <form>
+            <input class="roomIdInput" placeholder="RoomID" type="text" id="roomId" disableUnderline='true' autocomplete="off"></input>
+            <button class="submitRoomIdButton" onClick={joinRoom}>JOIN</button>
+          </form>
+        </div>
+        <a class="joinRoomLink" href="/CreateRoomPage">DONT HAVE A ROOM !?</a>
     </div>
   );
 }

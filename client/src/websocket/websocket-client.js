@@ -28,12 +28,15 @@ export class WebSocketClient {
         this.socketRef.onmessage = (e) => {
             if (typeof e.data === 'string') {
                 console.log("Received: '" + e.data + "'");
-                var query = e.data.split(" ");
-                if(query[0] == "addLast"){
-                    this.addLastLocal(query[1]);
+                var videoId = JSON.parse(e.data).videoId;
+                var videoName = JSON.parse(e.data).videoName;
+                var instruction = JSON.parse(e.data).instruction;
+                console.log(videoId + " "+videoName + " "+instruction);
+                if(instruction == "A"){
+                    this.addLastLocal(videoId, videoName);
                     return; 
                 }
-                if(query[0] == "removeFirst"){
+                if(instruction == "R"){
                     this.removeFirstLocal();
                 }
                 
