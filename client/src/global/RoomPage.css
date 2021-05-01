@@ -1,0 +1,45 @@
+.linkIdInput{
+    box-shadow: 5px 6px #888888;
+    padding: 1px 0px 0px 0px; 
+    width: 200px;
+    height: 38px; 
+    border: 2px solid #4BC5FF;
+    margin-left: 0px;
+    margin-right: 15px;
+    text-align: center;
+    font-family: inherit;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+
+  .submitLinkButton {
+    box-shadow: -5px 6px #888888;
+    background-color: #4BC5FF;
+    padding: 12px 28px;
+    outline: 0; 
+    font-size: 16px;
+    border: none;
+    border: 0px solid #F5528A;
+    font-family: inherit;
+    font-weight: 600;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    cursor: pointer;
+  }
+
+  .submitLinkButton:hover {
+    background-color: #F5528A;
+    }
+
+  .container {
+      display: flex;
+      width:100%;
+      padding: 10px;
+  }
+
+  .container-child {
+      float: left;
+      width: 50%;
+      padding: 3px;
+      margin: 3px;
+}  

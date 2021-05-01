@@ -48,7 +48,7 @@ export class QueueComponent extends React.Component {
         if(this.state.queueVideoNames.length == 0){ return <p>No songs are in the queue</p> }
         
         return (
-            this.state.queueVideoNames.map((item, index) => <p key={index}>{item}</p>)  
+            this.state.queueVideoNames.map((item, index) => <p id="node" key={index}>{item}</p>)  
         )
     }
    
