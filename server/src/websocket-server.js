@@ -1,7 +1,7 @@
 import { httpServer } from './server.js';
 import { parseMessage } from './message-handlers/message-parser.js';
 import { getRoomById } from './data/room-cache';
-import { roomExists, joinRoom, leaveRoom } from './data/room-service.js';
+import { joinRoom, leaveRoom } from './data/room-service.js';
 import { BAD_REQUEST_RESPONSE, NOT_FOUND_RESPONSE, FORBIDDEN_RESPONSE } from '../../shared/constants.js';
 import { User } from './data/user.js';
 
@@ -26,21 +26,17 @@ wsServer.on('connection', function connection(ws, request, client) {
     ws.isAlive = true;
     ws.on('pong', () => {
         ws.isAlive = true;
-        console.log('pong received');
     });
 
     // Parse incoming messages
     ws.on('message', function incoming(data) {
-        parseMessage(this, data);
-        console.log('message received');
+        parseMessage(ws, roomId, user, data);
     });
     
     // When the ws connection is closed
     ws.on('close', function close() {
         leaveRoom(roomId, user);
-        console.log('disconnected');
-    });
-
+    });  
 });
 
 // Let the ws-server handle upgrade requests and respond with a ws-connection
