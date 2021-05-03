@@ -13,7 +13,7 @@ export class Room {
         this.videoNameQueue = new Denque();
 
         // Start heartbeat for room
-        setInterval(() => {
+        this.heartbeat = setInterval(() => {
             console.log(`pinging ${self.users.size} users in ${self.roomId}`);
             self.users.forEach((user, userId) => {
                 let ws = user.ws;
@@ -62,4 +62,10 @@ export class Room {
         return this.users.size === 0;
     }
 
+    close() {
+        clearInterval(this.heartbeat);
+        this.users.forEach((user, userId) => {
+            user.ws.terminate();
+        });
+    }
 }

@@ -43,7 +43,8 @@ wsServer.on('connection', function connection(ws, request, client) {
 });
 
 // Let the ws-server handle upgrade requests and respond with a ws-connection
-httpServer.on('upgrade', (request, socket, head) => {
+httpServer.on('join', (request, socket, head) => {
+    console.log('disconneAFKJDSKLJFFKJFKLcted');
     const { query, pathname } = new Url(request.url);
     if (pathname !== '/join') {
         socket.write('HTTP/1.1 400 Bad Request\r\n\r\n');

@@ -29,9 +29,7 @@ export function addRoom(roomId, room) {
 
 export function deleteRoom(roomId) {
     const room = getRoomById(roomId);
-    room.users.forEach((user, userId) => {
-        user.ws.terminate();
-    });
+    room.close();
     
     roomCache.delete(roomId);
 }
