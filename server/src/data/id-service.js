@@ -1,4 +1,4 @@
-import { getRoomById } from './room-data.js';
+import { getRoomById } from './room-cache.js';
 import { v4 as uuid } from 'uuid';
 
 function randomString(length) {

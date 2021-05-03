@@ -29,7 +29,10 @@ export function addRoom(roomId, room) {
 
 export function deleteRoom(roomId) {
     const room = getRoomById(roomId);
+    if (!room) {
+        return;
+    }
+
     room.close();
-    
     roomCache.delete(roomId);
 }

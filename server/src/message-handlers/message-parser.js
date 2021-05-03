@@ -1,9 +1,9 @@
-import { getRoomById } from '../data/room-data.js';
+import { getRoomById } from '../data/room-cache.js';
 import { YOUTUBE_API } from '../constants.js';
 import axios from 'axios';
 
 
-async function parseMessage(roomId, nickname, msg) {
+async function parseMessage(msg) {
     const room = getRoomById(roomId);
     if (!room) {
         //reply invalid message to client

@@ -1,6 +1,6 @@
 import { httpServer } from './server.js';
 import { parseMessage } from './message-handlers/message-parser.js';
-import { getRoomById } from './data/room-data';
+import { getRoomById } from './data/room-cache';
 import { roomExists, joinRoom, leaveRoom } from './data/room-service.js';
 import { BAD_REQUEST_RESPONSE, NOT_FOUND_RESPONSE, FORBIDDEN_RESPONSE } from '../../shared/constants.js';
 import { User } from './data/user.js';
@@ -14,14 +14,12 @@ wsServer.on('connection', function connection(ws, request, client) {
     const { query } = new Url(request.url);
     const queries = queryString.parse(query);
     const roomId = queries.roomId;
-    const nickname = queries.nickname || 'Anonymous';
     if (!getRoomById(roomId)) {
         ws.close();
     }
 
     // Add user to room list
     const user = new User(ws);
-    // Send message
     joinRoom(roomId, user);
 
     // Respond to heartbeats
@@ -33,9 +31,11 @@ wsServer.on('connection', function connection(ws, request, client) {
 
     // Parse incoming messages
     ws.on('message', function incoming(data) {
-        parseMessage(roomId, nickname, data);
+        parseMessage(data);
+        console.log('message received');
     });
-
+    
+    // When the ws connection is closed
     ws.on('close', function close() {
         leaveRoom(roomId, user);
         console.log('disconnected');
