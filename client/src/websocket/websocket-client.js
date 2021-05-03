@@ -19,7 +19,7 @@ export class WebSocketClient {
         var roomId = roomId;
         this.addLastLocal = addLastLocal; 
         this.removeFirstLocal = removeFirstLocal;
-        this.socketRef = new W3CWebSocket(`ws://localhost:8080/join?roomId=${roomId}&nickname=${nickname}`);
+        this.socketRef = new W3CWebSocket(`ws://localhost:3001/join?roomId=${roomId}`);
         
         this.socketRef.onopen = () => {
             console.log('WebSocket open');
