@@ -59,5 +59,5 @@ app.use(function (err, req, res, next) {
 export const httpServer = app.listen(port, () => console.log(`App server listening on port ${port}!`));
 
 // Add ws-server on top of our HTTP server
-const rooms = require('./data/room-data.js');
+const roomCache = require('./data/room-cache.js');
 const wsServer = require('./websocket-server.js');

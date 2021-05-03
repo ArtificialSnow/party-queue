@@ -1,6 +1,5 @@
 import { Room } from './Room.js';
-import { getRoomById } from '../data/room-data.js';
-import { addRoom } from '../data/room-data';
+import { getRoomById, addRoom } from './room-cache.js';
 
 export function roomExists(roomId) {
     return Boolean(getRoomById(roomId));
