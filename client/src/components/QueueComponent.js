@@ -9,6 +9,20 @@ export class QueueComponent extends React.Component {
         queueVideoNames: []
     }
 
+
+    componentDidMount() {
+        this.props.getQueueState();
+    }
+
+    setQueueState = (videoIds, videoNames) => {
+        console.log(this.state.queueVideoNames);
+        console.log(videoNames);
+        this.setState({
+            queueVideoIds: videoIds,
+            queueVideoNames: videoNames
+        });
+    }
+
     addLast = (videoId, songName) => {
         this.setState({
             queueVideoIds: [...this.state.queueVideoIds, videoId]

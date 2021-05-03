@@ -1,10 +1,6 @@
 import { Room } from './Room.js';
 import { getRoomById, addRoom } from './room-cache.js';
 
-export function roomExists(roomId) {
-    return Boolean(getRoomById(roomId));
-}
-
 export function createRoom() {
     const room = new Room();
     const roomId = room.roomId;
