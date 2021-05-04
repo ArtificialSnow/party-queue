@@ -1,5 +1,5 @@
-import { Room } from './Room.js';
-import { getRoomById, addRoom } from './room-cache.js';
+import { Room } from '../data/data-structures/room.js';
+import { getRoomById, addRoom } from '../data/room-cache.js';
 
 export function createRoom() {
     const room = new Room();

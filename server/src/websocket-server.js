@@ -1,9 +1,9 @@
 import { httpServer } from './server.js';
 import { parseMessage } from './message-handlers/message-parser.js';
 import { getRoomById } from './data/room-cache';
-import { joinRoom, leaveRoom } from './data/room-service.js';
+import { joinRoom, leaveRoom } from './services/room-service.js';
 import { BAD_REQUEST_RESPONSE, NOT_FOUND_RESPONSE, FORBIDDEN_RESPONSE } from '../../shared/constants.js';
-import { User } from './data/user.js';
+import { User } from './data/data-structures/user.js';
 
 const ws = require('ws');
 var Url = require('url-parse');

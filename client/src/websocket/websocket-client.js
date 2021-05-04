@@ -5,12 +5,13 @@ export class WebSocketClient {
     static instance = null;
 
     static getInstance(roomId, nickname, addLastLocal, removeFirstLocal, setQueueState){
-        if(!WebSocketClient.instance){
+        if (!WebSocketClient.instance) {
             WebSocketClient.instance = new WebSocketClient(roomId, nickname, addLastLocal, removeFirstLocal, setQueueState);
-        } else if (WebSocketClient.instance.roomId != roomId){
+        } else if (WebSocketClient.instance.roomId != roomId) {
             WebSocketClient.instance.socketRef.close();
             WebSocketClient.instance = new WebSocketClient(roomId, nickname, addLastLocal, removeFirstLocal, setQueueState);
         }
+
         return WebSocketClient.instance; 
     }
 
@@ -58,7 +59,7 @@ export class WebSocketClient {
         };
 
         this.socketRef.onclose = function () {
-            console.log('echo-protocol Client Closed');
+            console.log('Client Closed');
         };
     }
 

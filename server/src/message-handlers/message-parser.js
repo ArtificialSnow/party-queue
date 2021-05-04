@@ -1,61 +1,38 @@
 import { getRoomById } from '../data/room-cache.js';
-import { YOUTUBE_API } from '../constants.js';
-import axios from 'axios';
+import { MessageTypes } from '../../../shared/constants.js';
+import { sendClientMediaQueue, sendClientUsers, addMedia, nextMedia } from './action-hooks.js';
 
 
-async function parseMessage(ws, roomId, user, msg) {
+function parseMessage(ws, roomId, user, msg) {
     const room = getRoomById(roomId);
     if (!room) {
-        //reply invalid message to client
-    }
-    console.log(`${user.nickname}: ${msg} to ${roomId}`);
-    var query = msg.split(" ");
-    if(query[0] == "addLast"){
-        var videoId = getVideoIdFromLink(query[1]);
-        var videoName =  await getNameFromVideoId(videoId);
-        room.addToQueue(videoId, videoName);
-        room.message(JSON.stringify({
-            videoId: videoId,
-            videoName: videoName, 
-            instruction: "A"
-        }));
-        return; 
-    }
-    if(query[0] == "removeFirst"){
-        room.removeFirst();
-        room.message(JSON.stringify({
-            videoId: "",
-            videoName: "", 
-            instruction: "R"
-        }));
-        return; 
+        return;
     }
 
-    if(query[0] == "getQueueState"){
-        var songNames = room.getQueuedSongNames();
-        var songIds = room.getQueuedSongIds();
-        ws.send(JSON.stringify({
-            videoNames: JSON.stringify(songNames),
-            videoIds: JSON.stringify(songIds), 
-            instruction: "Q"
-        }));
-        return; 
+    const parsedMessage = JSON.parse(msg);
+    const messageType = parsedMessage.messageType;
+    const payload = parsedMessage.payload;
+
+    switch (messageType) {
+        case (MessageTypes.CLIENT_REQUEST_QUEUE):
+            sendClientMediaQueue(ws, room, user, payload);
+            break;
+        case (MessageTypes.CLIENT_REQUEST_USERS):
+            sendClientUsers(ws, room, user, payload);
+            break;
+        case (MessageTypes.CLIENT_REQUEST_ADD_MEDIA):
+            if (!payload) {
+                break;
+            }
+            addMedia(ws, room, user, payload);
+            break;
+        case (MessageTypes.HOST_REQUEST_NEXT_MEDIA):
+            nextMedia(ws, room, user, payload);
+            break;
+        default:
+            break;
     }
 }
-
-function getVideoIdFromLink(media){
-    var words = media.split("=");
-    //Assuming the last word will always be the id
-    return words[words.length-1];
-}
-
-
-async function getNameFromVideoId(videoId){
-    const queryString = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&fields=items(id%2Csnippet)&key=${YOUTUBE_API}`;
-    const response = await axios.get(queryString);
-    var title = response.data.items[0].snippet.title;
-    return title;
-} 
 
 export {
     parseMessage,
