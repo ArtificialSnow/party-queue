@@ -1,5 +1,5 @@
-import { Room } from './Room.js';
-import { getRoomById, addRoom } from './room-cache.js';
+import { Room } from '../data/data-structures/room.js';
+import { getRoomById, addRoom } from '../data/room-cache.js';
 
 export function createRoom() {
     const room = new Room();
@@ -11,6 +11,22 @@ export function createRoom() {
     return {
         roomId: roomId,
         roomCapacity: roomCapacity
+    };
+}
+
+export function queryRoom(roomId) {
+    const room = getRoomById(roomId);
+    if (!room) {
+        return {
+            exists: false,
+            isFull: false
+        };
+    }
+
+    const isFull = room.isFull();
+    return {
+        exists: true,
+        isFull: isFull
     };
 }
 

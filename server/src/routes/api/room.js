@@ -1,6 +1,6 @@
 import express from 'express';
-import { ReasonPhrases, StatusCodes, getReasonPhrase, getStatusCode } from 'http-status-codes';
-import { createRoom } from '../../data/room-service.js';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import { createRoom, queryRoom } from '../../services/room-service.js';
 
 const router = express.Router();
 
@@ -10,6 +10,17 @@ router.post('/create', async (req, res) => {
 
     res.status(StatusCodes.CREATED)
         .json(roomData);
+})
+
+router.get('/peek', async(req, res) => {
+    var roomId = req.query['roomId'];
+    if (!roomId) {
+        return res.status(StatusCodes.BAD_REQUEST);
+    }
+
+    var queryData = queryRoom(roomId);
+    res.status(StatusCodes.OK)
+        .json(queryData);
 })
 
 export default router;
