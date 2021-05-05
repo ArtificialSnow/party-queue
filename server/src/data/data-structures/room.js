@@ -1,5 +1,5 @@
 import { generateUniqueRoomId } from '../../services/id-service.js';
-import { ROOM_CAPACITY, ROOM_HEARTBEAT_FREQUENCY } from '../../constants.js';
+import { ROOM_CAPACITY, ROOM_HEARTBEAT_FREQUENCY, QUEUE_CAPACITY } from '../../constants.js';
 import { MessageTypes } from '../../../../shared/constants.js';
 const Denque = require('denque');
 
@@ -36,14 +36,14 @@ export class Room {
     }
 
     addMediaToQueue(media) {
-        if (this.mediaQueue.length > 50) {
+        if (this.mediaQueue.length > QUEUE_CAPACITY) {
             return;
         }
 
         this.mediaQueue.push(media);
 
         const newQueue = this.getQueuedMedia();
-        room.messageAllUsers(JSON.stringify({
+        this.messageAllUsers(JSON.stringify({
             messageType: MessageTypes.SERVER_SEND_QUEUE_UPDATE,
             payload: newQueue
         }));
@@ -53,14 +53,18 @@ export class Room {
         this.mediaQueue.shift();
 
         const newQueue = this.getQueuedMedia();
-        room.messageAllUsers(JSON.stringify({
+        this.messageAllUsers(JSON.stringify({
             messageType: MessageTypes.SERVER_SEND_QUEUE_UPDATE,
             payload: newQueue
         }));
     }
 
     addUser(userId, user) {
-        if (this.isFull) {
+        if (!userId || !user) {
+            return;
+        }
+
+        if (this.isFull()) {
             return;
         }
 
@@ -68,18 +72,32 @@ export class Room {
         if (this.isEmpty()) {
             this.host = user;
         }
-
         this.users.set(userId, user);
 
+        const userInfo = {
+            id: user.id,
+            nickname: user.nickname,
+            isHost: (user.id === this.host.id)
+        };
+
+        user.ws.send(JSON.stringify({
+            messageType: MessageTypes.SERVER_SEND_USER_IDENTIFICATION,
+            payload: userInfo
+        }));
+
         const users = this.getUsers();
-        room.messageAllUsers(JSON.stringify({
+        this.messageAllUsers(JSON.stringify({
             messageType: MessageTypes.SERVER_SEND_USERS_UPDATE,
             payload: users
         }));
     }
 
     removeUser(userId) {
-        if (userId === this.host?.userId) {
+        if (!userId) {
+            return;
+        }
+
+        if (this.host && userId === this.host.id) {
             this.close();
             return;
         }
@@ -87,7 +105,7 @@ export class Room {
         this.users.delete(userId);
 
         const users = this.getUsers();
-        room.messageAllUsers(JSON.stringify({
+        this.messageAllUsers(JSON.stringify({
             messageType: MessageTypes.SERVER_SEND_USERS_UPDATE,
             payload: users
         }));
@@ -111,12 +129,17 @@ export class Room {
     }
 
     getUsers() {
-        var users = [];
-        this.users.foreach((value, key, map) => {
-            users.push({ value });
+        var userData = [];
+        this.users.forEach((value, key, map) => {
+            userData.push(
+                { 
+                    id: value.id,
+                    nickname: value.nickname,
+                    isHost: (value.id === this.host.id)
+                });
         });
 
-        return users;
+        return userData;
     }
 
     close() {

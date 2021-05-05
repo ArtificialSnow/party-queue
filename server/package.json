@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
+    "babel": "^6.23.0",
     "denque": "^1.5.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",

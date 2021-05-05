@@ -29,3 +29,7 @@ export function generateUniqueRoomId() {
 export function generateUserId() {
     return uuid();
 }
+
+export function generateMediaId() {
+    return uuid();
+}

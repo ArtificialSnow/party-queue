@@ -14,6 +14,22 @@ export function createRoom() {
     };
 }
 
+export function queryRoom(roomId) {
+    const room = getRoomById(roomId);
+    if (!room) {
+        return {
+            exists: false,
+            isFull: false
+        };
+    }
+
+    const isFull = room.isFull();
+    return {
+        exists: true,
+        isFull: isFull
+    };
+}
+
 export function joinRoom(roomId, user) {
     const room = getRoomById(roomId);
     if (!room) {

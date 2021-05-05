@@ -3,7 +3,7 @@ import { Media } from '../data/data-structures/media.js';
 
 export function sendClientMediaQueue(ws, room, user, payload) {
     const mediaQueue = room.getQueuedMedia();
-    const message = Json.stringify({
+    const message = JSON.stringify({
         messageType: MessageTypes.SERVER_SEND_QUEUE_UPDATE,
         payload: mediaQueue
     });
@@ -13,7 +13,7 @@ export function sendClientMediaQueue(ws, room, user, payload) {
 
 export function sendClientUsers(ws, room, user, payload) {
     const users = room.getUsers();
-    const message = Json.stringify({
+    const message = JSON.stringify({
         messageType: MessageTypes.SERVER_SEND_USERS_UPDATE,
         payload: users
     })
@@ -25,13 +25,13 @@ export function addMedia(ws, room, user, payload) {
     const mediaName = payload.mediaName;
     const artist = payload.artist;
     const source = payload.source;
-    const mediaId = payload.mediaId;
-    if (!mediaName || !artist || !source || !mediaId) {
+    const mediaUrl = payload.mediaUrl;
+    if (!mediaUrl) {
         return;
     }
 
-    const media = new Media(mediaName, artist, source, mediaId, user.nickname);
-    room.addMedia(media);
+    const media = new Media(mediaName, artist, source, mediaUrl, user.nickname);
+    room.addMediaToQueue(media);
 }
 
 export function nextMedia(ws, room, user, payload) {

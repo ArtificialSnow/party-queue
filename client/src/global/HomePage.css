@@ -16,7 +16,7 @@
     text-align: center
   }
 
-  .submitRoomIdButton {
+  .roomButton {
     box-shadow: -5px 6px #888888;
     background-color: #4BC5FF;
     padding: 12px 28px;
@@ -31,7 +31,7 @@
     cursor: pointer;
   }
 
-  .submitRoomIdButton:hover {
+  .roomButton:hover {
     background-color: #F5528A;
     }
     
