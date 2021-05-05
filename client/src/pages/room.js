@@ -11,7 +11,7 @@ import '../global/RoomPage.css';
 
 export default function Room() {
   const { roomId } = useParams();
-  const { user, sendMessage, setRoomId, queuedMedia } = useContext(AppContext);
+  const { user, sendMessage, setRoomId } = useContext(AppContext);
   useEffect(() => {
     setRoomId(roomId);
   }, [])
@@ -55,7 +55,7 @@ export default function Room() {
           <MediaQueue />
         </div>
         <div className="container-child">
-          <MediaPlayer queuedMedia={queuedMedia} sendMessage={sendMessage} />
+          { user?.isHost ? <MediaPlayer /> : null }
         </div>
       </div>
     </div>
