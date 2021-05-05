@@ -11,22 +11,22 @@ export function AppContextProvider({ children }) {
     const [user, setUser] = useState(null);
 
     const [webSocket, setWebSocket] = useState(null);
-    useEffect(() => {
-        if (!roomId) {
-            return;
-        }
+    useEffect(() => {   
 
+        // Reset old state
         setQueuedMedia([]);
         setAllUsers([]);
         setUser(null);
-
         if (webSocket) {
             webSocket.close();
         }
 
+        if (!roomId) {
+            return;
+        }
+
         let roomWebSocket = new W3CWebSocket(`ws://localhost:3001/join?roomId=${roomId}`);
         setWebSocket(roomWebSocket);
-
         roomWebSocket.onopen = () => {
             roomWebSocket.send(JSON.stringify({ messageType: MessageTypes.CLIENT_REQUEST_QUEUE }));
             roomWebSocket.send(JSON.stringify({ messageType: MessageTypes.CLIENT_REQUEST_USERS }));

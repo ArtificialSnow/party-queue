@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import axios from 'axios';
 import { StatusCodes } from 'http-status-codes';
 import { useHistory } from 'react-router';
 import { DisplayModalErrorMessage } from '../App.js';
+import { AppContext } from '../context-providers/AppContextProvider.js';
 import '../global/HomePage.css';
 
 export default function Home() {
   const history = useHistory();
+  const { setRoomId } = useContext(AppContext);
+  useEffect(() => {
+    setRoomId(null);
+  })
 
   async function joinRoom() {
     var roomId = document.getElementById("roomIdInput").value;

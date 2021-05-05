@@ -1,6 +1,7 @@
 import { generateUniqueRoomId } from '../../services/id-service.js';
 import { ROOM_CAPACITY, ROOM_HEARTBEAT_FREQUENCY, QUEUE_CAPACITY } from '../../constants.js';
 import { MessageTypes } from '../../../../shared/constants.js';
+import { deleteRoom } from '../room-cache.js'; 
 const Denque = require('denque');
 
 export class Room {
@@ -98,7 +99,7 @@ export class Room {
         }
 
         if (this.host && userId === this.host.id) {
-            this.close();
+            deleteRoom(this.roomId);
             return;
         }
 
