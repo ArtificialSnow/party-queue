@@ -21,5 +21,5 @@ export const MessageTypes = Object.freeze({
 export const MediaTypes = Object.freeze({
     YOUTUBE: 'youtube',
     SPOTIFY: 'spotify',
-    SOUNDCLOUD: 'soundcloud'
+    UNKNOWN: 'unknown'
 });

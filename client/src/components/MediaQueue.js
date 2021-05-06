@@ -10,7 +10,7 @@ export function MediaQueue() {
             {
                 (!queuedMedia ||queuedMedia.length === 0)
                 ? <p>No songs are in the queue</p>
-                : queuedMedia.map((item, index) => <p id="node" key={index}>{item.mediaUrl}</p>)
+                : queuedMedia.map((item, index) => <p id="node" key={index}>{item.mediaName}</p>)
             }
         </div>
     );

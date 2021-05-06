@@ -5,7 +5,8 @@ import { AppContext } from '../context-providers/AppContextProvider.js';
 import { MediaPlayer } from '../components/MediaPlayer';
 import { MediaQueue } from '../components/MediaQueue.js';
 import { DisplayModalErrorMessage } from '../App.js';
-import { MessageTypes } from '../shared/constants.js';
+import { MessageTypes, MediaTypes } from '../shared/constants.js';
+import { parseYoutubeUrl, getYouTubeMediaInfo, parseSoundCloudUrl, getSoundCloudMediaInfo } from '../media-helpers/media-helpers.js';
 import '../global/RoomPage.css';
 
 
@@ -16,29 +17,45 @@ export default function Room() {
     setRoomId(roomId);
   }, [])
 
-  function submitMedia() {
+  async function submitMedia() {
     const mediaUrl = document.querySelector('#mediaLinkInput').value;
     if (!mediaUrl) {
       return;
     }
 
-    //Error checking to check that link is valid
+    const youtubeMediaId = parseYoutubeUrl(mediaUrl);
+    if (youtubeMediaId) {
+      const { title, artist } = await getYouTubeMediaInfo(youtubeMediaId);
 
-    const payload = {
-      mediaName: null,
-      artist: null,
-      source: null,
-      mediaUrl: mediaUrl,
-      requestedBy: user.nickname
+      const payload = {
+        mediaName: title,
+        artist: artist,
+        source: MediaTypes.YOUTUBE,
+        mediaUrl: mediaUrl,
+        requestedBy: user.nickname
+      }
+
+      sendMessage(MessageTypes.CLIENT_REQUEST_ADD_MEDIA, payload);
+      return;
     }
-    
-    sendMessage(MessageTypes.CLIENT_REQUEST_ADD_MEDIA, payload);
-  }
 
-  function parseYoutubeUrl(url) {
-      var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-      var match = url.match(regExp);
-      return (match && match[7].length === 11) ? match[7] : false;
+    const soundCloudMediaId = parseSoundCloudUrl(mediaUrl);
+    if (soundCloudMediaId) {
+      const { title, artist } = await getSoundCloudMediaInfo(soundCloudMediaId);
+      
+      const payload = {
+        mediaName: title,
+        artist: artist,
+        source: MediaTypes.SOUNDCLOUD,
+        mediaUrl: mediaUrl,
+        requestedBy: user.nickname
+      }
+
+      sendMessage(MessageTypes.CLIENT_REQUEST_ADD_MEDIA, payload);
+      return;
+    }
+
+    DisplayModalErrorMessage('Invalid url');
   }
 
   return (
@@ -55,7 +72,7 @@ export default function Room() {
           <MediaQueue />
         </div>
         <div className="container-child">
-          { user?.isHost ? <MediaPlayer /> : null }
+          {user?.isHost ? <MediaPlayer /> : null}
         </div>
       </div>
     </div>
