@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useContext } from 'react';
+import React from 'react';
+import { useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppContext } from '../context-providers/AppContextProvider.js';
 import { MediaPlayer } from '../components/MediaPlayer';
@@ -7,6 +7,7 @@ import { MediaQueue } from '../components/MediaQueue.js';
 import { DisplayModalErrorMessage } from '../App.js';
 import { MessageTypes, MediaTypes } from '../shared/constants.js';
 import { parseYoutubeUrl, getYouTubeMediaInfo, parseSoundCloudUrl, getSoundCloudMediaInfo } from '../media-helpers/media-helpers.js';
+import { UserList } from '../components/UserList.js';
 import '../global/RoomPage.css';
 
 
@@ -42,7 +43,7 @@ export default function Room() {
     const soundCloudMediaId = parseSoundCloudUrl(mediaUrl);
     if (soundCloudMediaId) {
       const { title, artist } = await getSoundCloudMediaInfo(soundCloudMediaId);
-      
+
       const payload = {
         mediaName: title,
         artist: artist,
@@ -73,6 +74,9 @@ export default function Room() {
         </div>
         <div className="container-child">
           {user?.isHost ? <MediaPlayer /> : null}
+        </div>
+        <div className="container-child">
+          <UserList />
         </div>
       </div>
     </div>
