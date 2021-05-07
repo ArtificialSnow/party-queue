@@ -1,6 +1,6 @@
 import React from 'react';
 import { useContext, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useRouteMatch } from 'react-router-dom';
 import { AppContext } from '../context-providers/AppContextProvider.js';
 import { MediaPlayer } from '../components/MediaPlayer';
 import { MediaQueue } from '../components/MediaQueue.js';
@@ -8,11 +8,14 @@ import { DisplayModalErrorMessage } from '../App.js';
 import { MessageTypes, MediaTypes } from '../shared/constants.js';
 import { parseYoutubeUrl, getYouTubeMediaInfo, parseSoundCloudUrl, getSoundCloudMediaInfo } from '../media-helpers/media-helpers.js';
 import { UserList } from '../components/UserList.js';
+import { RoomQrCode } from '../components/RoomQrCode.js';
+
 import '../global/RoomPage.css';
 
 
 export default function Room() {
   const { roomId } = useParams();
+  const { path, url } = useRouteMatch();
   const { user, sendMessage, setRoomId } = useContext(AppContext);
   useEffect(() => {
     setRoomId(roomId);
@@ -77,6 +80,9 @@ export default function Room() {
         </div>
         <div className="container-child">
           <UserList />
+        </div>
+        <div className="container-child">
+          <RoomQrCode url={url} />
         </div>
       </div>
     </div>
