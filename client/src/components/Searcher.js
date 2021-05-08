@@ -3,16 +3,35 @@ import { useContext } from 'react';
 
 import "./Searcher.css";
 import youtube from './api/youtube';
-import { MessageTypes } from '../shared/constants.js';
+import { MediaTypes, MessageTypes } from '../shared/constants.js';
 import { AppContext } from '../context-providers/AppContextProvider.js';
+import { parseYoutubeUrl, getYouTubeMediaInfo } from '../media-helpers/media-helpers.js';
 
 
 import { InputGroup, Input } from 'reactstrap';
 
-function VideoItem({ title, channel, img, onClickDetails, videoJson, videoIndex}) {
-    function handleOnClick()
-    {
-        document.querySelector('#mediaLinkInput').value = `https://www.youtube.com/watch?v=${videoJson.id.videoId}`;
+
+function VideoItem({ title, channel, img, onClickDetails, videoJson, videoIndex }) {
+    
+    const { user, sendMessage} = useContext(AppContext);
+    async function submitVideo() {
+
+        const mediaUrl = `https://www.youtube.com/watch?v=${videoJson.id.videoId}`;
+        const youtubeMediaId = parseYoutubeUrl(mediaUrl);
+        if (youtubeMediaId) {
+            const { title, artist } = await getYouTubeMediaInfo(youtubeMediaId);
+
+            const payload = {
+                mediaName: title,
+                artist: artist,
+                source: MediaTypes.YOUTUBE,
+                mediaUrl: mediaUrl,
+                requestedBy: user.nickname
+            }
+
+            sendMessage(MessageTypes.CLIENT_REQUEST_ADD_MEDIA, payload);
+            return;
+        }
     }
 
     return (
@@ -25,7 +44,7 @@ function VideoItem({ title, channel, img, onClickDetails, videoJson, videoIndex}
                 <span>{channel}</span>
             </div>
             <div key={3}>
-                <button onClick={() => handleOnClick()}>Add</button>
+                <button onClick={() => submitVideo()}>Add</button>
             </div>
         </div>
     );
@@ -43,7 +62,7 @@ function VideoList({ videos, selectedVideo }) {
                         title={video.snippet.title}
                         channel={video.snippet.channelTitle}
                         img={video.snippet.thumbnails.default}
-                        videoIndex = {index}
+                        videoIndex={index}
                     />
                 );
             })}
@@ -67,7 +86,7 @@ class SearchBar extends React.Component {
             <div className="searchbar">
                 <form onSubmit={this.onFormSubmit}>
                     <InputGroup>
-                        <Input className="searchbar-input" placeholder="Search videos" value={this.state.input} onChange={this.onHandleSearch} />
+                        <Input className="searchbar-input" placeholder="Search video" value={this.state.input} onChange={this.onHandleSearch} />
                     </InputGroup>
                 </form>
 
