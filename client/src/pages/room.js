@@ -9,6 +9,7 @@ import { MessageTypes, MediaTypes } from '../shared/constants.js';
 import { parseYoutubeUrl, getYouTubeMediaInfo, parseSoundCloudUrl, getSoundCloudMediaInfo } from '../media-helpers/media-helpers.js';
 import { UserList } from '../components/UserList.js';
 import { RoomQrCode } from '../components/RoomQrCode.js';
+import Searcher from '../components/Searcher';
 
 import '../global/RoomPage.css';
 
@@ -84,6 +85,9 @@ export default function Room() {
         <div className="container-child">
           <RoomQrCode url={url} />
         </div>
+      </div>
+      <div>
+        <Searcher/>
       </div>
     </div>
   );
