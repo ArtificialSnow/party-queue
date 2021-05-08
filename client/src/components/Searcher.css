@@ -10,11 +10,7 @@
     display: flex;
     margin: 50px;
 }
-.app-video{
-   
-    flex:0.7;
-  
-}
+
 .app-list{
    flex:0.3;
   
