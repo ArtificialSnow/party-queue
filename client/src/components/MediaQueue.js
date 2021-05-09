@@ -7,6 +7,7 @@ export function MediaQueue() {
 
     return (
         <div>
+            <p>Number of songs: {queuedMedia.length}</p>
             {
                 (!queuedMedia ||queuedMedia.length === 0)
                 ? <p>No songs are in the queue</p>
