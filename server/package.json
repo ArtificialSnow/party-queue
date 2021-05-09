@@ -4,6 +4,7 @@
   "description": "server for party-queue application",
   "main": "./src/server.js",
   "scripts": {
+    "test": "jest",
     "start": "node -r esm ./src/server.js",
     "http-server": "node -r esm ./src/server.js",
     "production": "cross-env NODE_ENV=production PORT=3000 node -r esm ./src/server.js"

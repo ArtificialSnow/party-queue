@@ -9,6 +9,7 @@ export function parseYoutubeUrl(url) {
 export function parseSoundCloudUrl(url) {
     var regExp = /^(https?:\/\/)?(www\.|m\.)?(soundcloud\.com|snd\.sc)\/(.*)$\/?/;
     var match = url.match(regExp);
+    console.log(match[4]);
     return (match && match[4]) ? match[4] : false;
 }
 
