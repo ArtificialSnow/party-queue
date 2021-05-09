@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useContext } from 'react';
 import youtube from './api/youtube';
 import { MediaTypes, MessageTypes } from '../shared/constants.js';
@@ -9,10 +9,9 @@ import { InputGroup, Input } from 'reactstrap';
 import '../stylesheets/MediaSearchResults.css';
 
 function VideoItem({ title, channel, img, onClickDetails, videoJson, videoIndex }) {
-    
-    const { user, sendMessage} = useContext(AppContext);
-    async function submitVideo() {
 
+    const { user, sendMessage } = useContext(AppContext);
+    async function submitVideo() {
         const mediaUrl = `https://www.youtube.com/watch?v=${videoJson.id.videoId}`;
         const youtubeMediaId = parseYoutubeUrl(mediaUrl);
         if (youtubeMediaId) {
@@ -32,9 +31,11 @@ function VideoItem({ title, channel, img, onClickDetails, videoJson, videoIndex 
     }
 
     return (
+        videoJson.id.kind === "youtube#video"
+        ?
         <div className="videoitem" key={videoIndex}>
             <div className="videoitem-imgcon" key={1}>
-                <img className="videoitem-img" src={img.url}></img>
+                <img className="videoitem-img" src={img.url} alt="" ></img>
             </div>
             <div className="videoitem-desc" key={2}>
                 <h5 className="videoitem-title">{title}</h5>
@@ -43,7 +44,7 @@ function VideoItem({ title, channel, img, onClickDetails, videoJson, videoIndex 
             <div key={3}>
                 <button onClick={() => submitVideo()}>Add</button>
             </div>
-        </div>
+        </div>:null
     );
 }
 
@@ -67,29 +68,28 @@ function VideoList({ videos, selectedVideo }) {
     );
 }
 
-class SearchBar extends React.Component {
-    state = { input: "" };
-    onFormSubmit = (e) => {
+function SearchBar(props) {
+    const [state, setState] = useState({ input: "" });
+    function onFormSubmit(e){
         e.preventDefault();
-        this.props.onSubmit(this.state.input);
+        props.onSubmit(state.input);
     }
-    onHandleSearch = (e) => {
+    function onHandleSearch(e){
         const val = e.target.value;
-        this.setState({ input: val })
+        setState({ input: val })
 
     }
-    render() {
-        return (
-            <div className="searchbar">
-                <form onSubmit={this.onFormSubmit}>
-                    <InputGroup>
-                        <Input className="searchbar-input" placeholder="Search video" value={this.state.input} onChange={this.onHandleSearch} />
-                    </InputGroup>
-                </form>
 
-            </div>
-        );
-    }
+    return (
+        <div className="searchbar">
+            <form onSubmit={onFormSubmit}>
+                <InputGroup>
+                    <Input className="searchbar-input" placeholder="Search video" value={state.input} onChange={onHandleSearch} />
+                </InputGroup>
+            </form>
+
+        </div>
+    );
 
 }
 
@@ -107,11 +107,10 @@ function SearchBox(props) {
     );
 }
 
-export class MediaSearchResults extends React.Component {
+export function MediaSearchResults() {
+    const [state, setState] = useState({ videos: [], selectedVid: null, playlist: [] });
 
-    state = { videos: [], selectedVid: null, playlist: [] }
-
-    onSubmitSearch = async (input) => {
+    async function onSubmitSearch(input) {
         try {
             const res = await youtube.get('/search/', {
                 params: {
@@ -120,38 +119,35 @@ export class MediaSearchResults extends React.Component {
                 }
             })
 
-            this.setState({ videos: res.data.items, selectedVid: res.data.items[0] });
+            setState({ videos: res.data.items, selectedVid: res.data.items[0] });
         } catch (err) {
             console.log(err)
         }
-        console.log(this.state.videos);
-
     };
 
 
-    selectedVideo = (video) => {
+    function selectedVideo(video) {
 
-        console.log(this.state.selectedVid);
-        this.setState({ selectedVid: video });
+        setState({ selectedVid: video });
         return;
 
     }
 
-    render() {
-        return (
-            <div className="Searcher">
-                <div className="app-navbar">
-                    <SearchBox onSubmit={this.onSubmitSearch} />
-                </div>
 
-                <div className="app-videocon">
-                    <div className="app-list">
-                        <VideoList videos={this.state.videos} selectedVideo={this.selectedVideo} />
-                    </div>
+    return (
+        <div className="Searcher">
+            <div className="app-navbar">
+                <SearchBox onSubmit={onSubmitSearch} />
+            </div>
+
+            <div className="app-videocon">
+                <div className="app-list">
+                    <VideoList videos={state.videos} selectedVideo={selectedVideo} />
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
+
 }
 
 
