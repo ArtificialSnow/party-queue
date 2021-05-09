@@ -16,7 +16,7 @@ import '../global/RoomPage.css';
 
 export default function Room() {
   const { roomId } = useParams();
-  const { path, url } = useRouteMatch();
+  const { url } = useRouteMatch();
   const { user, sendMessage, setRoomId } = useContext(AppContext);
   useEffect(() => {
     setRoomId(roomId);
@@ -36,11 +36,12 @@ export default function Room() {
         mediaName: title,
         artist: artist,
         source: MediaTypes.YOUTUBE,
-        mediaUrl: mediaUrl,
+        mediaUrl: `https://www.youtube.com/watch?v=${youtubeMediaId}`,
         requestedBy: user.nickname
       }
 
       sendMessage(MessageTypes.CLIENT_REQUEST_ADD_MEDIA, payload);
+      document.getElementById("mediaLinkInput").value = "";
       return;
     }
 
@@ -52,11 +53,12 @@ export default function Room() {
         mediaName: title,
         artist: artist,
         source: MediaTypes.SOUNDCLOUD,
-        mediaUrl: mediaUrl,
+        mediaUrl: `https://soundcloud.com/${soundCloudMediaId}`,
         requestedBy: user.nickname
       }
 
       sendMessage(MessageTypes.CLIENT_REQUEST_ADD_MEDIA, payload);
+      document.getElementById("mediaLinkInput").value = "";
       return;
     }
 
