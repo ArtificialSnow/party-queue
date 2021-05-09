@@ -9,9 +9,9 @@ import { MessageTypes, MediaTypes } from '../shared/constants.js';
 import { parseYoutubeUrl, getYouTubeMediaInfo, parseSoundCloudUrl, getSoundCloudMediaInfo } from '../media-helpers/media-helpers.js';
 import { UserList } from '../components/UserList.js';
 import { RoomQrCode } from '../components/RoomQrCode.js';
-import Searcher from '../components/Searcher';
+import { MediaSearchResults } from '../components/MediaSearchResults';
 
-import '../global/RoomPage.css';
+import '../stylesheets/room.css';
 
 
 export default function Room() {
@@ -89,7 +89,7 @@ export default function Room() {
         </div>
       </div>
       <div>
-        <Searcher/>
+        <MediaSearchResults />
       </div>
     </div>
   );

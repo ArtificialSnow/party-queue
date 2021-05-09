@@ -1,15 +1,12 @@
 import React from "react";
 import { useContext } from 'react';
-
-import "./Searcher.css";
 import youtube from './api/youtube';
 import { MediaTypes, MessageTypes } from '../shared/constants.js';
 import { AppContext } from '../context-providers/AppContextProvider.js';
 import { parseYoutubeUrl, getYouTubeMediaInfo } from '../media-helpers/media-helpers.js';
-
-
 import { InputGroup, Input } from 'reactstrap';
 
+import '../stylesheets/MediaSearchResults.css';
 
 function VideoItem({ title, channel, img, onClickDetails, videoJson, videoIndex }) {
     
@@ -110,7 +107,7 @@ function SearchBox(props) {
     );
 }
 
-export default class Searcher extends React.Component {
+export class MediaSearchResults extends React.Component {
 
     state = { videos: [], selectedVid: null, playlist: [] }
 

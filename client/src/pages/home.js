@@ -4,7 +4,8 @@ import { StatusCodes } from 'http-status-codes';
 import { useHistory } from 'react-router';
 import { DisplayModalErrorMessage } from '../App.js';
 import { AppContext } from '../context-providers/AppContextProvider.js';
-import '../global/HomePage.css';
+
+import '../stylesheets/home.css';
 
 export default function Home() {
   const history = useHistory();
