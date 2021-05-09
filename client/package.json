@@ -20,9 +20,10 @@
     "websocket": "^1.0.33"
   },
   "scripts": {
+    
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
