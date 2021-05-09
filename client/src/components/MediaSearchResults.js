@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useContext } from 'react';
-import "./Searcher.css";
 import youtube from './api/youtube';
 import { MediaTypes, MessageTypes } from '../shared/constants.js';
 import { AppContext } from '../context-providers/AppContextProvider.js';
@@ -107,7 +106,7 @@ function SearchBox(props) {
     );
 }
 
-export default function Searcher() {
+export function MediaSearchResults() {
     const [state, setState] = useState({ videos: [], selectedVid: null, playlist: [] });
 
     async function onSubmitSearch(input) {
