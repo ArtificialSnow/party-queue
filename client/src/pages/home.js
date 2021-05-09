@@ -22,19 +22,19 @@ export default function Home() {
 
     const res = await axios.get(`/api/room/peek?roomId=${roomId}`);
     if (res.status !== StatusCodes.OK) {
-      //Display error msg
+      DisplayModalErrorMessage('Error in retrieving the room.')
       return;
     }
 
     const roomExists = res.data?.exists;
     if (!roomExists) {
-      //Display error message 'The room doesnt exist'
+      DisplayModalErrorMessage("The room doesn't exist");
       return;
     }
 
     const isFull = res.data?.isFull;
     if (isFull) {
-      //Display error message 'The room is full'
+      DisplayModalErrorMessage('The room is full.')
       return;
     }
 
@@ -44,7 +44,7 @@ export default function Home() {
   async function createRoom() {
     const res = await axios.post(`/api/room/create`);
     if (res.status !== StatusCodes.CREATED) {
-      //Display error msg
+      DisplayModalErrorMessage('Error in creating the room. Please check the credentials and try again.')
       return;
     }
 
