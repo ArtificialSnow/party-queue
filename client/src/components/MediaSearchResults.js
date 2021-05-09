@@ -5,10 +5,9 @@ import youtube from './api/youtube';
 import { MediaTypes, MessageTypes } from '../shared/constants.js';
 import { AppContext } from '../context-providers/AppContextProvider.js';
 import { parseYoutubeUrl, getYouTubeMediaInfo } from '../media-helpers/media-helpers.js';
-
-
 import { InputGroup, Input } from 'reactstrap';
 
+import '../stylesheets/MediaSearchResults.css';
 
 function VideoItem({ title, channel, img, onClickDetails, videoJson, videoIndex }) {
 
