@@ -12,7 +12,6 @@ function VideoItem({ title, channel, img, onClickDetails, videoJson, videoIndex 
 
     const { user, sendMessage } = useContext(AppContext);
     async function submitVideo() {
-
         const mediaUrl = `https://www.youtube.com/watch?v=${videoJson.id.videoId}`;
         const youtubeMediaId = parseYoutubeUrl(mediaUrl);
         if (youtubeMediaId) {
@@ -32,6 +31,7 @@ function VideoItem({ title, channel, img, onClickDetails, videoJson, videoIndex 
     }
 
     return (
+        videoJson.id.kind === "youtube#channel"?null:
         <div className="videoitem" key={videoIndex}>
             <div className="videoitem-imgcon" key={1}>
                 <img className="videoitem-img" src={img.url} alt="" ></img>
